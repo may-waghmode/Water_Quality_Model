@@ -1,12 +1,33 @@
-🚀 How to Run
-Step 1 — Install dependencies
-bashpip install pandas numpy scikit-learn xgboost imbalanced-learn matplotlib seaborn joblib
 
-Step 2 — Run the demo
-bashpython demo.py
+## 📁 Project Files
 
-Step 3 — Use in your own code
-pythonfrom water_safety import predict_safety
+```
+water_quality_project/
+  ├── water_potability.csv          ← Training dataset (Kaggle)
+  ├── water_quality_model.pkl       ← Trained ML model (saved)
+  ├── water_quality_80.py           ← Training script (run to retrain)
+  ├── water_safety.py               ← Model 1: Safe / Unsafe prediction
+  ├── geo_source.py                 ← Model 2: Water source identification
+  └── demo.py                       ← Run this to see both models in action
+```
+
+
+
+## 🚀 How to Run
+
+### Step 1 — Install dependencies
+```bash
+pip install pandas numpy scikit-learn xgboost imbalanced-learn matplotlib seaborn joblib
+```
+
+### Step 2 — Run the demo
+```bash
+python demo.py
+```
+
+### Step 3 — Use in your own code
+```python
+from water_safety import predict_safety
 from geo_source   import predict_source
 
 # Safety prediction
@@ -37,3 +58,4 @@ source = predict_source({
 })
 print(source["source_type"])  # Municipal / Treated Supply
 print(source["confidence"])   # 61%
+```
