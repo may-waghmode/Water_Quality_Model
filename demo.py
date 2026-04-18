@@ -16,13 +16,17 @@ sys.path.insert(0, ".")
 
 from water_safety import predict_safety
 from geo_source  import predict_source
+from wqi_score import calculate_wqi
+from pollution_cause_model import analyze_pollution_causes
 
 
 def analyze_water(name, readings):
-    """Run both models and print a clean combined report."""
+    """Run all models and print a clean combined report."""
 
     safety = predict_safety(readings)
     source = predict_source(readings)
+    wqi_info = calculate_wqi(readings)
+    causes_info = analyze_pollution_causes(readings)
 
     safe_icon = "✅" if safety["safe"] else "❌"
 
@@ -67,6 +71,32 @@ def analyze_water(name, readings):
         icon  = source["icon"] if sname == source["source_type"] else "  "
         print(f"    {icon} {sname:<34} {pct:>4}  {bar}")
 
+    print(f"""
+  ┌─────────────────────────────────────────┐
+  │  WATER QUALITY INDEX (WQI)              │
+  │                                         │
+  │  Score      : {wqi_info['wqi_score']:<25}│
+  │  Category   : {wqi_info['category']:<25}│
+  └─────────────────────────────────────────┘""")
+
+    print(f"""
+  ┌─────────────────────────────────────────┐
+  │  POLLUTION ANALYSIS & ROOT CAUSES       │
+  │                                         │
+  │  Level      : {causes_info['severity']:<25}│
+  │  Confidence : {causes_info['confidence']:<4}%                   │
+  └─────────────────────────────────────────┘""")
+
+    if causes_info["identified_causes"]:
+        print(f"\n  Root Causes:")
+        for c in causes_info["identified_causes"]:
+            print(f"    •  {c}")
+
+    if causes_info["optimized_solutions"]:
+        print(f"\n  Remediation Strategy:")
+        for s in causes_info["optimized_solutions"]:
+            print(f"    ➤  {s}")
+
     print()
 
 
@@ -77,7 +107,7 @@ def analyze_water(name, readings):
 print("""
 ╔══════════════════════════════════════════════════════╗
 ║      WATER QUALITY MONITORING SYSTEM                ║
-║      ML Model Demo — Both Models Combined           ║
+║      ML Model Demo — Full System Integration        ║
 ╚══════════════════════════════════════════════════════╝
 """)
 
@@ -146,16 +176,20 @@ print("=" * 54)
 print("  END OF DEMO")
 print("=" * 54)
 print("""
-  This system uses 2 models:
-  1. Safety Model  — ML trained on 3276 real water samples
-                     88-90% accuracy on test data
-  2. Source Model  — Rule-based using WHO guidelines
-                     Identifies 5 water source types
+  This system uses 4 core modules:
+  1. Safety Model        — ML Classification for safe/unsafe drinking water.
+  2. Geo-Source Model    — Rule-based model predicting precise geographical origin.
+  3. WQI Calculator      — WHO/BIS standard Weighted Arithmetic Index logic.
+  4. Root Cause Analyzer — RF Classifier on real pollution databank for diagnostics.
 
   For hardware integration:
     from water_safety import predict_safety
-    from geo_source   import predict_source
+    from geo_source import predict_source
+    from wqi_score import calculate_wqi
+    from pollution_cause_model import analyze_pollution_causes
 
-    result = predict_safety(your_sensor_readings)
+    safety = predict_safety(your_sensor_readings)
     source = predict_source(your_sensor_readings)
+    wqi    = calculate_wqi(your_sensor_readings)
+    causes = analyze_pollution_causes(your_sensor_readings)
 """)
