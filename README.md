@@ -1,5 +1,5 @@
 
-## 📁 Project Files
+##  Project Files
 
 ```
 water_quality_project/
@@ -13,7 +13,7 @@ water_quality_project/
 
 
 
-## 🚀 How to Run
+##  How to Run
 
 ### Step 1 — Install dependencies
 ```bash
